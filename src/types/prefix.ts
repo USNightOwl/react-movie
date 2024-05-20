@@ -1,3 +1,4 @@
 export enum PREFIX {
-  MOVIE = '/movie'
+  MOVIE = '/movie',
+  PERSON = '/person',
 }
