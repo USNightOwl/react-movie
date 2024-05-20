@@ -9,6 +9,8 @@ import IconStar from "../components/IconStar"
 import useQueryParams from "../hooks/useQueryParams"
 import Video from "../components/MovieDetail/Video"
 import MovieList from "../components/MovieList"
+import CastList from "../components/MovieDetail/CastList"
+import Review from "../components/MovieDetail/Review"
 
 const MovieDetail = () => {
   const searchParams = useQueryParams()
@@ -34,6 +36,16 @@ const MovieDetail = () => {
     queryFn: () => movieApi.getSimilarMovies(movieId)
   })
 
+  const { data: castsData, isLoading: isCastLoading } = useQuery({
+    queryKey: ['casts', movieId],
+    queryFn: () => movieApi.getCastsOfMovie(movieId)
+  })
+
+  const { data: movieReviewsData, isLoading: isMovieReviewLoading } = useQuery({
+    queryKey: ['reviews', movieId, page],
+    queryFn: () => movieApi.getMovieReviews(movieId, { page })
+  })
+
   const onMovieClicked = ({ id, name }: { id: string; name: string }) => {
     const nameId = generateNameId({ id, name })
     navigate(`/movie/${nameId}`)
@@ -42,8 +54,10 @@ const MovieDetail = () => {
   const movie = movieData?.data;
   const videos = videosData?.data.results;
   const similarMovies = similarMovieData?.data.results;
-  
-  const isLoading = isMovieLoading || isVideoLoading || isSimilarMovieLoading;
+  const casts = castsData?.data.cast;
+  const reviews = movieReviewsData?.data
+
+  const isLoading = isMovieLoading || isVideoLoading || isSimilarMovieLoading || isCastLoading || isMovieReviewLoading;
 
   return isLoading ? (
     <div className='mt-10'>
@@ -99,7 +113,11 @@ const MovieDetail = () => {
       {/* Cast, Similar movies */}
       <div className='page-container'>
         <div className='mt-10 px-5'>
-          {/* <CastList casts={casts} title='Casts' titleClassName='text-3xl text-center' /> */}
+          <CastList 
+            casts={casts} 
+            title='Casts' 
+            titleClassName='text-3xl text-center' 
+          />
         </div>
         <div className='mt-10 px-5'>
           <MovieList
@@ -109,8 +127,18 @@ const MovieDetail = () => {
             onMovieClicked={onMovieClicked}
           />
         </div>
-      </div>
 
+        {/* Reviews */}
+        {reviews && reviews.results.length > 0 && (
+          <div className='mt-10 px-5'>
+            <h2 className='text-3xl text-center'>Reviews</h2>
+            {reviews.results.map((review) => (
+              <Review key={review.id} review={review} />
+            ))}
+            
+          </div>
+        )}
+      </div>
     </div>
   )
 }
