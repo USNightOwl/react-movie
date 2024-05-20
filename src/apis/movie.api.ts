@@ -20,6 +20,10 @@ const movieApi = {
   getMovieVideos(movieId: string | number) {
     return http.get<{ results: Video[] }>(`${URL}/${movieId}/videos`)
   },
+
+  getSimilarMovies(movieId: string | number) {
+    return http.get<SuccessResponse<Movie[]>>(`${URL}/${movieId}/similar`)
+  },
   
 }
 

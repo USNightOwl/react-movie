@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { getIdFromNameId, isoToCustomDateFormat } from "../utils/helpers"
+import { generateNameId, getIdFromNameId, isoToCustomDateFormat } from "../utils/helpers"
 import Spinner from "../components/Spinner"
 import movieApi from "../apis/movie.api"
 import { useQuery } from "@tanstack/react-query"
@@ -8,6 +8,7 @@ import Genre from "../components/MovieDetail/Genre"
 import IconStar from "../components/IconStar"
 import useQueryParams from "../hooks/useQueryParams"
 import Video from "../components/MovieDetail/Video"
+import MovieList from "../components/MovieList"
 
 const MovieDetail = () => {
   const searchParams = useQueryParams()
@@ -28,10 +29,21 @@ const MovieDetail = () => {
     queryFn: () => movieApi.getMovieVideos(movieId)
   })
 
+  const { data: similarMovieData, isLoading: isSimilarMovieLoading } = useQuery({
+    queryKey: ['movies', movieId],
+    queryFn: () => movieApi.getSimilarMovies(movieId)
+  })
+
+  const onMovieClicked = ({ id, name }: { id: string; name: string }) => {
+    const nameId = generateNameId({ id, name })
+    navigate(`/movie/${nameId}`)
+  }
+
   const movie = movieData?.data;
-  const videos = videosData?.data.results
+  const videos = videosData?.data.results;
+  const similarMovies = similarMovieData?.data.results;
   
-  const isLoading = isMovieLoading || isVideoLoading;
+  const isLoading = isMovieLoading || isVideoLoading || isSimilarMovieLoading;
 
   return isLoading ? (
     <div className='mt-10'>
@@ -81,6 +93,21 @@ const MovieDetail = () => {
             <h2 className='mb-5 text-3xl text-center'>Trailers</h2>
             <Video videos={videos} />
           </div>
+        </div>
+      </div>
+
+      {/* Cast, Similar movies */}
+      <div className='page-container'>
+        <div className='mt-10 px-5'>
+          {/* <CastList casts={casts} title='Casts' titleClassName='text-3xl text-center' /> */}
+        </div>
+        <div className='mt-10 px-5'>
+          <MovieList
+            title='Similars'
+            titleClassName='text-3xl text-center'
+            movies={similarMovies}
+            onMovieClicked={onMovieClicked}
+          />
         </div>
       </div>
 
