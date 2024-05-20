@@ -5,6 +5,7 @@ import BannerSlider from "../components/BannerSlider"
 import { useNavigate } from "react-router-dom"
 import { path } from "../constants/path"
 import { generateNameId } from "../utils/helpers"
+import MovieList from "../components/MovieList"
 
 const Home = () => {
   const navigate = useNavigate()
@@ -32,6 +33,15 @@ const Home = () => {
         isLoading={isLoadingNowPlayingMovies}
         onMovieClicked={onMovieClicked} 
       />
+
+    <section className='page-container px-3 sm:px-5 mt-10'>
+      <MovieList
+        title='Now Playing'
+        movies={nowPlayingMovies?.data.results}
+        isLoading={isLoadingNowPlayingMovies}
+        onMovieClicked={onMovieClicked}
+      />
+    </section>
 
     </div>
   )
