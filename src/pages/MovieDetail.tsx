@@ -11,6 +11,8 @@ import Video from "../components/MovieDetail/Video"
 import MovieList from "../components/MovieList"
 import CastList from "../components/MovieDetail/CastList"
 import Review from "../components/MovieDetail/Review"
+import { QueryConfig } from "../types/query.type"
+import Pagination from "../components/Pagination"
 
 const MovieDetail = () => {
   const searchParams = useQueryParams()
@@ -135,7 +137,11 @@ const MovieDetail = () => {
             {reviews.results.map((review) => (
               <Review key={review.id} review={review} />
             ))}
-            
+            <Pagination 
+              path='/movie' 
+              totalPages={reviews.total_pages} 
+              queryConfig={page as QueryConfig} 
+            />
           </div>
         )}
       </div>
