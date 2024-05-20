@@ -1,4 +1,4 @@
-import { Movie, MovieType } from "../types/movie.type";
+import { Movie, MovieDetail, MovieType, Video } from "../types/movie.type";
 import { PREFIX } from "../types/prefix"
 import { SuccessResponse } from "../types/response.type";
 import http from "../utils/http";
@@ -11,7 +11,16 @@ const movieApi = {
         page: page || 1
       }
     })
-  }
+  },
+
+  getMovieDetail(movieId: string | number) {
+    return http.get<MovieDetail>(`${URL}/${movieId}`)
+  },
+  
+  getMovieVideos(movieId: string | number) {
+    return http.get<{ results: Video[] }>(`${URL}/${movieId}/videos`)
+  },
+  
 }
 
 export default movieApi

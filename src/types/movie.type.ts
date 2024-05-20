@@ -1,5 +1,10 @@
 export type MovieType = 'now_playing' | 'popular' | 'top_rated' | 'upcoming'
 
+export type Genre = {
+  id: number
+  name: string
+}
+
 export type Movie = {
   id: number
   adult: boolean
@@ -12,4 +17,21 @@ export type Movie = {
   video: boolean
   vote_average: number
   vote_count: number
+}
+
+export type MovieDetail = Movie & {
+  genres: Genre[]
+  popularity: number
+  revenue: number
+  status: string
+}
+
+export type Video = {
+  name: string
+  key: string
+  site: string
+  size: number
+  type: string
+  official: boolean
+  published_at: string
 }
