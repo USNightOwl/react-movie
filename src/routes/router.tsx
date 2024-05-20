@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import MovieDetail from "../pages/MovieDetail";
 import Cast from "../pages/Cast";
+import Search from "../pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: '/cast/:id',
         element: <Cast/>
+      },
+      {
+        path: '/search',
+        element: <Search/>
       }
     ]
   },
