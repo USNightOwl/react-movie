@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-900 font-body;
+  }
+}
+
+@layer components {
+  .page-container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.movies-list,
+.cast-list,
+.trailer {
+  .swiper {
+    // Swiper Navigation
+    position: unset;
+    .swiper-button-next,
+    .swiper-button-prev {
+      position: absolute;
+      top: 24px;
+      left: auto;
+      &::after {
+        color: white;
+        font-size: 28px;
+        font-weight: 900;
+      }
+    }
+    .swiper-button-prev {
+      right: 50px;
+    }
+  }
+}
+
+.swiper {
+  .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+    .swiper-slide {
+      height: auto;
+    }
+  }
+}
+
+.banner {
+  .swiper {
+    .swiper-button-prev,
+    .swiper-button-next {
+      color: #f62682;
+      &::after {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.trailer {
+  .swiper {
+    width: 100%;
+    height: 100%;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
